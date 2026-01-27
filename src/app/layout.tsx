@@ -7,7 +7,7 @@ import Providers from '@/components/Providers';
 const inter = Inter({ subsets: ['latin', 'vietnamese'] });
 
 export const metadata: Metadata = {
-  title: 'AI Live Talk - Luyện nói tiếng Trung HSK',
+  title: 'AI Live Talk - Luyện nói tiếng Trung HSK của Bông',
   description: 'Ứng dụng luyện nói tiếng Trung với AI theo chuẩn HSK 1-6. Hội thoại real-time với AI tutor.',
   keywords: ['HSK', 'tiếng Trung', 'học tiếng Trung', 'AI tutor', 'luyện nói'],
 };
