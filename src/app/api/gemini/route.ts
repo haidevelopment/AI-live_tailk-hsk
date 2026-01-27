@@ -4,6 +4,9 @@ import { getSystemPrompt } from '@/lib/gemini-prompts';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     const { message, level, topicName, topicNameZh, history } = await request.json();
