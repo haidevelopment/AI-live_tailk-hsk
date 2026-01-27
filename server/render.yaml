@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: hsk-ai-websocket
+    runtime: node
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: WS_PORT
+        value: 3002
