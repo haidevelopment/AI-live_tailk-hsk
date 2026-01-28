@@ -62,6 +62,9 @@ class WebSocketLiveController {
             break;
           case 'audio_chunk':
             session.stats.audioChunksReceived++;
+            if (session.stats.audioChunksReceived % 10 === 0) {
+              console.log(`📥 Received audio chunk #${session.stats.audioChunksReceived} from client`);
+            }
             await this.handleAudioChunk(session, data);
             break;
           case 'end_stream':
@@ -145,6 +148,7 @@ class WebSocketLiveController {
             // AI text response - ONLY send outputTranscription (what AI actually says)
             // Do NOT send part.text (thinking process/instructions)
             if (message.serverContent.outputTranscription?.text) {
+              console.log(`🤖 AI transcript: ${message.serverContent.outputTranscription.text}`);
               ws.send(JSON.stringify({
                 type: 'text_response',
                 text: message.serverContent.outputTranscription.text,
@@ -163,6 +167,10 @@ class WebSocketLiveController {
               // AI audio response
               if (part.inlineData && part.inlineData.mimeType.startsWith('audio/')) {
                 session.stats.audioChunksSent++;
+                
+                if (session.stats.audioChunksSent % 5 === 0) {
+                  console.log(`🔊 Sending AI audio chunk #${session.stats.audioChunksSent} to client`);
+                }
                 
                 ws.send(JSON.stringify({
                   type: 'audio_response',
@@ -257,17 +265,19 @@ class WebSocketLiveController {
     const { ws, liveService } = session;
     
     if (!session.isStreaming) {
+      console.warn(`⚠️ Audio chunk received but not streaming - Session: ${session.sessionId}`);
       return;
     }
     
     try {
       if (!data.audio) {
+        console.warn(`⚠️ Audio chunk has no data - Session: ${session.sessionId}`);
         return;
       }
       
       await liveService.sendRealtimeInput(data.audio);
     } catch (error) {
-      console.error(`❌ Error sending audio:`, error.message);
+      console.error(`❌ Error sending audio to Gemini - Session: ${session.sessionId}:`, error.message);
     }
   }
 
@@ -275,10 +285,14 @@ class WebSocketLiveController {
     const { ws, liveService } = session;
     
     console.log(`🎙️ Ending stream - Session: ${session.sessionId}`);
+    console.log(`📊 Stats - Chunks received: ${session.stats.audioChunksReceived}, Chunks sent: ${session.stats.audioChunksSent}`);
     session.isStreaming = false;
     
     try {
+      console.log(`📤 Sending end_stream to Gemini Live API...`);
       await liveService.endAudioStream();
+      console.log(`✅ Audio stream ended, waiting for AI response...`);
+      
       ws.send(JSON.stringify({
         type: 'stream_ended',
         sessionId: session.sessionId,

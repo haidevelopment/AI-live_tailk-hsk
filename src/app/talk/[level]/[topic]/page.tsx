@@ -34,6 +34,7 @@ export default function TalkPage({ params }: Props) {
   const [currentAITranscript, setCurrentAITranscript] = useState('');
   const [isAISpeaking, setIsAISpeaking] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [pendingRecording, setPendingRecording] = useState(false);
 
   const currentAIMessageIdRef = useRef<string | null>(null);
   const hasConnectedRef = useRef(false);
@@ -177,11 +178,21 @@ export default function TalkPage({ params }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hskLevel, topic]);
 
+  // Auto-start recording when stream is ready
+  useEffect(() => {
+    if (pendingRecording && isStreaming && !isRecording) {
+      console.log('✅ Stream ready, starting recording...');
+      setPendingRecording(false);
+      startRecording();
+    }
+  }, [pendingRecording, isStreaming, isRecording, startRecording]);
+
   const toggleRecording = useCallback(async () => {
     if (isRecording) {
       console.log('🎤 Stop recording');
       stopRecording();
       endStream();
+      setPendingRecording(false);
     } else {
       if (!isReady) {
         setError('Đang kết nối với AI...');
@@ -190,16 +201,18 @@ export default function TalkPage({ params }: Props) {
       if (isPlaying) {
         clearQueue();
       }
-      console.log('🎤 Start recording');
+      console.log('🎤 Start recording - waiting for stream to start...');
       setError(null);
       const started = startStream();
       if (!started) {
         setError('Không thể bắt đầu. Vui lòng thử lại.');
         return;
       }
-      await startRecording();
+      
+      // Set pending flag - useEffect will start recording when isStreaming becomes true
+      setPendingRecording(true);
     }
-  }, [isRecording, isReady, isPlaying, stopRecording, endStream, startStream, startRecording, clearQueue]);
+  }, [isRecording, isReady, isPlaying, stopRecording, endStream, startStream, clearQueue]);
 
   const handleEndCall = useCallback(() => {
     stopRecording();

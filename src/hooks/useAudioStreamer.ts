@@ -53,6 +53,7 @@ export function useAudioStreamer(options: UseAudioStreamerOptions = {}) {
       const processor = audioContext.createScriptProcessor(4096, 1, 1);
       processorRef.current = processor;
 
+      let chunkCount = 0;
       processor.onaudioprocess = (e) => {
         if (onAudioChunk) {
           const inputData = e.inputBuffer.getChannelData(0);
@@ -72,6 +73,10 @@ export function useAudioStreamer(options: UseAudioStreamerOptions = {}) {
           }
           const base64Audio = btoa(binary);
 
+          chunkCount++;
+          if (chunkCount % 10 === 0) {
+            console.log(`🎤 Audio chunk #${chunkCount} sent (${base64Audio.length} bytes)`);
+          }
           onAudioChunk(base64Audio);
         }
       };

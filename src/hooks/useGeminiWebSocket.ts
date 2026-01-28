@@ -214,11 +214,19 @@ export function useGeminiWebSocket(options: UseGeminiWebSocketOptions) {
     setIsStreaming(false);
   }, []);
 
+  const audioChunkCountRef = useRef(0);
+  
   const sendAudioChunk = useCallback((audioBase64: string) => {
     if (!wsRef.current || wsRef.current.readyState !== WebSocket.OPEN || !isStreaming) {
+      console.warn('⚠️ Cannot send audio chunk - WS not ready or not streaming');
       return;
     }
 
+    audioChunkCountRef.current++;
+    if (audioChunkCountRef.current % 10 === 0) {
+      console.log(`📤 Sending audio chunk #${audioChunkCountRef.current} to server (${audioBase64.length} bytes)`);
+    }
+    
     wsRef.current.send(JSON.stringify({
       type: 'audio_chunk',
       audio: audioBase64,
