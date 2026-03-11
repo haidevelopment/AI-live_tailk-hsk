@@ -26,7 +26,6 @@ export default function TopicSelectionPage({ params }: Props) {
   return (
     <div className="px-4 py-12 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl">
-        {/* Back button */}
         <Link
           href="/hsk"
           className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-8 transition-colors"
@@ -35,7 +34,6 @@ export default function TopicSelectionPage({ params }: Props) {
           Quay lại chọn cấp độ
         </Link>
 
-        {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <div
             className={cn(
@@ -52,7 +50,6 @@ export default function TopicSelectionPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Topics Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {topics.map((topic) => (
             <Link
@@ -60,7 +57,6 @@ export default function TopicSelectionPage({ params }: Props) {
               href={`/talk/${level}/${topic.id}`}
               className="group glass rounded-2xl p-6 card-hover"
             >
-              {/* Icon */}
               <div className="flex items-center gap-3 mb-4">
                 <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center text-2xl">
                   {topic.icon}
@@ -71,10 +67,8 @@ export default function TopicSelectionPage({ params }: Props) {
                 </div>
               </div>
 
-              {/* Description */}
               <p className="text-sm text-slate-600 mb-4">{topic.description}</p>
 
-              {/* Sample phrases */}
               <div className="space-y-2 mb-4">
                 {topic.samplePhrases.slice(0, 2).map((phrase, index) => (
                   <div
@@ -87,7 +81,6 @@ export default function TopicSelectionPage({ params }: Props) {
                 ))}
               </div>
 
-              {/* CTA */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1 text-primary-600">
                   <MessageCircle className="h-4 w-4" />
@@ -99,7 +92,6 @@ export default function TopicSelectionPage({ params }: Props) {
           ))}
         </div>
 
-        {/* Empty state */}
         {topics.length === 0 && (
           <div className="text-center py-12">
             <p className="text-slate-600">Không có chủ đề nào cho cấp độ này.</p>

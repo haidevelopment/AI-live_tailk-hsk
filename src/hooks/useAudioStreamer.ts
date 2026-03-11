@@ -43,13 +43,11 @@ export function useAudioStreamer(options: UseAudioStreamerOptions = {}) {
 
       const source = audioContext.createMediaStreamSource(stream);
 
-      // Analyser for audio level visualization
       const analyser = audioContext.createAnalyser();
       analyser.fftSize = 256;
       analyserRef.current = analyser;
       source.connect(analyser);
 
-      // Processor for getting audio chunks
       const processor = audioContext.createScriptProcessor(4096, 1, 1);
       processorRef.current = processor;
 
@@ -58,14 +56,12 @@ export function useAudioStreamer(options: UseAudioStreamerOptions = {}) {
         if (onAudioChunk) {
           const inputData = e.inputBuffer.getChannelData(0);
 
-          // Convert float32 to int16 PCM
           const pcmData = new Int16Array(inputData.length);
           for (let i = 0; i < inputData.length; i++) {
             const s = Math.max(-1, Math.min(1, inputData[i]));
             pcmData[i] = s < 0 ? s * 0x8000 : s * 0x7fff;
           }
 
-          // Convert to base64
           const uint8Array = new Uint8Array(pcmData.buffer);
           let binary = '';
           for (let i = 0; i < uint8Array.length; i++) {
@@ -84,7 +80,6 @@ export function useAudioStreamer(options: UseAudioStreamerOptions = {}) {
       source.connect(processor);
       processor.connect(audioContext.destination);
 
-      // Start level monitoring
       const monitorLevel = () => {
         if (analyserRef.current && onAudioLevel) {
           const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);

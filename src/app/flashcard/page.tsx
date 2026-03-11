@@ -5,7 +5,6 @@ export default function FlashcardPage() {
   return (
     <div className="px-4 py-12 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-2xl text-center">
-        {/* Back button */}
         <Link
           href="/"
           className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-8 transition-colors"
@@ -14,7 +13,6 @@ export default function FlashcardPage() {
           Về trang chủ
         </Link>
 
-        {/* Content */}
         <div className="glass rounded-3xl p-12">
           <div className="h-20 w-20 rounded-2xl bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center mx-auto mb-6">
             <Construction className="h-10 w-10 text-amber-600" />
@@ -35,7 +33,6 @@ export default function FlashcardPage() {
           </div>
         </div>
 
-        {/* Redirect suggestion */}
         <div className="mt-8">
           <p className="text-slate-600 mb-4">Trong khi chờ đợi, bạn có thể:</p>
           <Link

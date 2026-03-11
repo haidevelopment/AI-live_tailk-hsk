@@ -11,11 +11,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No text provided' }, { status: 400 });
     }
 
-    // Use Google Cloud Text-to-Speech API if available
-    // For now, we'll use a browser-based solution via Web Speech API on the client
-    // This endpoint can be expanded to use Google Cloud TTS for better quality
-
-    // Return the text for client-side TTS
     return NextResponse.json({ 
       text,
       lang,

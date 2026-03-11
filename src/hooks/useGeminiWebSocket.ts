@@ -75,7 +75,6 @@ export function useGeminiWebSocket(options: UseGeminiWebSocketOptions) {
         isConnectingRef.current = false;
         setIsConnected(true);
 
-        // Send init message
         ws.send(JSON.stringify({
           type: 'init',
           level,
@@ -180,7 +179,6 @@ export function useGeminiWebSocket(options: UseGeminiWebSocketOptions) {
     }
 
     if (wsRef.current) {
-      // Only send stop message if WebSocket is open
       if (wsRef.current.readyState === WebSocket.OPEN) {
         wsRef.current.send(JSON.stringify({ type: 'stop' }));
       }
@@ -244,10 +242,8 @@ export function useGeminiWebSocket(options: UseGeminiWebSocketOptions) {
     }));
   }, []);
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
-      // Only disconnect if we have an active connection
       if (wsRef.current && wsRef.current.readyState !== WebSocket.CLOSED) {
         disconnect();
       }

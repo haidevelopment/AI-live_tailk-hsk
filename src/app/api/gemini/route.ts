@@ -20,7 +20,6 @@ export async function POST(request: NextRequest) {
 
     const systemPrompt = getSystemPrompt(level, topicName, topicNameZh);
 
-    // Use gemini-2.0-flash for text generation (live audio requires different setup)
     const model = genAI.getGenerativeModel({ 
       model: 'gemini-2.0-flash-exp',
       systemInstruction: systemPrompt,
@@ -36,7 +35,6 @@ export async function POST(request: NextRequest) {
 
     const result = await chat.sendMessageStream(message);
 
-    // Create a streaming response
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
       async start(controller) {

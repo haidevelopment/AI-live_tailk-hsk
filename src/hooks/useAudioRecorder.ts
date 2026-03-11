@@ -40,20 +40,17 @@ export function useAudioRecorder(options: AudioRecorderOptions = {}) {
       
       const source = audioContext.createMediaStreamSource(stream);
       
-      // Analyser for audio level visualization
       const analyser = audioContext.createAnalyser();
       analyser.fftSize = 256;
       analyserRef.current = analyser;
       source.connect(analyser);
       
-      // Processor for getting audio chunks
       const processor = audioContext.createScriptProcessor(4096, 1, 1);
       processorRef.current = processor;
       
       processor.onaudioprocess = (e) => {
         if (onAudioChunk) {
           const inputData = e.inputBuffer.getChannelData(0);
-          // Convert float32 to int16 PCM
           const pcmData = new Int16Array(inputData.length);
           for (let i = 0; i < inputData.length; i++) {
             const s = Math.max(-1, Math.min(1, inputData[i]));
@@ -66,7 +63,6 @@ export function useAudioRecorder(options: AudioRecorderOptions = {}) {
       source.connect(processor);
       processor.connect(audioContext.destination);
       
-      // Start level monitoring
       const monitorLevel = () => {
         if (analyserRef.current && onAudioLevel) {
           const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);

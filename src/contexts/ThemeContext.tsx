@@ -110,7 +110,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<ThemeColors>(THEMES[0]);
   const [mounted, setMounted] = useState(false);
 
-  // Load theme from localStorage on mount
   useEffect(() => {
     setMounted(true);
     const savedThemeId = localStorage.getItem(STORAGE_KEY);
@@ -122,7 +121,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  // Apply CSS variables when theme changes
   useEffect(() => {
     if (!mounted) return;
 
@@ -131,7 +129,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     root.style.setProperty('--color-primary-light', theme.primaryLight);
     root.style.setProperty('--color-primary-dark', theme.primaryDark);
 
-    // Update meta theme color
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (metaThemeColor) {
       metaThemeColor.setAttribute('content', theme.primary);
@@ -142,11 +139,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     console.log('🎨 Setting theme:', themeId);
     const newTheme = THEMES.find((t) => t.id === themeId);
     if (newTheme) {
-      console.log('✅ Theme found:', newTheme.name);
       setThemeState(newTheme);
       localStorage.setItem(STORAGE_KEY, themeId);
       
-      // Apply CSS variables immediately
       const root = document.documentElement;
       root.style.setProperty('--color-primary', newTheme.primary);
       root.style.setProperty('--color-primary-light', newTheme.primaryLight);
@@ -154,7 +149,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Always provide context, even before mount
   return (
     <ThemeContext.Provider value={{ theme, setTheme, themes: THEMES }}>
       {children}
@@ -163,9 +157,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 }
 
 export function useTheme() {
-  const context = useContext(ThemeContext);
+  const context = useContext(ThemeContext); 
   if (context === undefined) {
-    // Return default values during SSR or when provider is not available
     return {
       theme: THEMES[0],
       setTheme: () => {},

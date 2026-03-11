@@ -5,11 +5,9 @@ import { MessageCircle, Mic, BookOpen, Trophy, ArrowRight } from 'lucide-react';
 export default function HomePage() {
   return (
     <div className="relative overflow-hidden">
-      {/* Hero Section */}
       <section className="relative px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left content */}
             <div className="text-center lg:text-left">
               <div className="inline-flex items-center gap-2 rounded-full bg-primary-100 px-4 py-2 text-sm font-medium text-primary-700 mb-6">
                 <span className="relative flex h-2 w-2">
@@ -40,7 +38,6 @@ export default function HomePage() {
                 </Link>
               </div>
 
-              {/* Stats */}
               <div className="mt-12 grid grid-cols-3 gap-6">
                 <div className="text-center">
                   <div className="text-3xl font-bold text-primary-600">6</div>
@@ -57,15 +54,11 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right illustration */}
             <div className="relative lg:pl-8">
               <div className="relative mx-auto w-full max-w-md">
-                {/* Background decoration */}
                 <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-primary-100 to-mint-100 opacity-60 blur-2xl"></div>
                 
-                {/* Card */}
                 <div className="relative glass rounded-3xl p-8 shadow-2xl">
-                  {/* AI Avatar */}
                   <div className="flex justify-center mb-6">
                     <div className="relative">
                       <div className="h-32 w-32 flex items-center justify-center">
@@ -84,7 +77,6 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  {/* Chat preview */}
                   <div className="space-y-3">
                     <div className="bg-white rounded-2xl rounded-bl-md p-3 shadow-sm max-w-[80%]">
                       <p className="text-slate-800">你好！今天想练习什么？</p>
@@ -98,7 +90,6 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  {/* Mic button preview */}
                   <div className="mt-6 flex justify-center">
                     <div className="h-14 w-14 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center shadow-lg animate-pulse-slow">
                       <Mic className="h-6 w-6 text-white" />
@@ -111,7 +102,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Features Section */}
       <section className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-12">
@@ -153,7 +143,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
           <div className="glass rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">

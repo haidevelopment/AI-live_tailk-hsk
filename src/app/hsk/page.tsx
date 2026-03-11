@@ -7,7 +7,6 @@ export default function HSKLevelPage() {
   return (
     <div className="px-4 py-12 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl">
-        {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-3xl sm:text-4xl font-bold text-slate-900">
             Chọn cấp độ <span className="gradient-text">HSK</span>
@@ -18,7 +17,6 @@ export default function HSKLevelPage() {
           </p>
         </div>
 
-        {/* Level Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {hskLevels.map((level) => (
             <Link
@@ -26,7 +24,6 @@ export default function HSKLevelPage() {
               href={`/hsk/${level.id}`}
               className="group glass rounded-2xl p-6 card-hover relative overflow-hidden"
             >
-              {/* Background gradient on hover */}
               <div
                 className={cn(
                   'absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity',
@@ -36,7 +33,6 @@ export default function HSKLevelPage() {
               />
 
               <div className="relative">
-                {/* Icon and badge */}
                 <div className="flex items-start justify-between mb-4">
                   <div
                     className={cn(
@@ -55,12 +51,10 @@ export default function HSKLevelPage() {
                   </div>
                 </div>
 
-                {/* Content */}
                 <h2 className="text-xl font-bold text-slate-900 mb-1">{level.name}</h2>
                 <p className="text-sm font-medium text-slate-500 mb-2">{level.title}</p>
                 <p className="text-slate-600 text-sm mb-4">{level.description}</p>
 
-                {/* CTA */}
                 <div className="flex items-center text-primary-600 font-medium text-sm group-hover:gap-2 transition-all">
                   <span>Chọn chủ đề</span>
                   <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-all -ml-4 group-hover:ml-0" />
@@ -70,7 +64,6 @@ export default function HSKLevelPage() {
           ))}
         </div>
 
-        {/* Info box */}
         <div className="mt-12 glass rounded-2xl p-6 text-center max-w-2xl mx-auto">
           <p className="text-slate-600">
             💡 <strong>Mẹo:</strong> Nếu bạn mới học, hãy bắt đầu với HSK 1. 

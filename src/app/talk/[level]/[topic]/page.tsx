@@ -46,7 +46,6 @@ export default function TalkPage({ params }: Props) {
     onPlaybackEnd: () => setIsAISpeaking(false),
   });
 
-  // WebSocket connection to Gemini Live API
   const {
     isConnected,
     isReady,
@@ -64,7 +63,6 @@ export default function TalkPage({ params }: Props) {
       console.log('👤 User said:', text);
       setCurrentUserTranscript(text);
       
-      // Add user message
       if (text.trim()) {
         const userMessage: Message = {
           id: `user-${Date.now()}`,
@@ -83,7 +81,6 @@ export default function TalkPage({ params }: Props) {
       console.log('🤖 AI said:', text);
       setCurrentAITranscript((prev) => prev + text);
       
-      // Create or update AI message
       if (!currentAIMessageIdRef.current) {
         currentAIMessageIdRef.current = `ai-${Date.now()}`;
         const aiMessage: Message = {
@@ -137,7 +134,6 @@ export default function TalkPage({ params }: Props) {
     },
   });
 
-  // Audio recorder
   const { isRecording, startRecording, stopRecording } = useAudioStreamer({
     sampleRate: 16000,
     onAudioChunk: (base64Audio) => {
@@ -148,7 +144,6 @@ export default function TalkPage({ params }: Props) {
     },
   });
 
-  // Connect WebSocket on mount - only once
   useEffect(() => {
     let mounted = true;
     
@@ -156,7 +151,6 @@ export default function TalkPage({ params }: Props) {
       console.log('🔌 Connecting to WebSocket:', WS_URL);
       hasConnectedRef.current = true;
       
-      // Small delay to avoid React Strict Mode double-mount issues
       const timer = setTimeout(() => {
         if (mounted) {
           connect();
@@ -175,10 +169,8 @@ export default function TalkPage({ params }: Props) {
     return () => {
       mounted = false;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hskLevel, topic]);
 
-  // Auto-start recording when stream is ready
   useEffect(() => {
     if (pendingRecording && isStreaming && !isRecording) {
       console.log('✅ Stream ready, starting recording...');
@@ -209,7 +201,6 @@ export default function TalkPage({ params }: Props) {
         return;
       }
       
-      // Set pending flag - useEffect will start recording when isStreaming becomes true
       setPendingRecording(true);
     }
   }, [isRecording, isReady, isPlaying, stopRecording, endStream, startStream, clearQueue]);
@@ -237,7 +228,6 @@ export default function TalkPage({ params }: Props) {
 
   return (
     <div className="flex flex-col h-[calc(100vh-64px)]">
-      {/* Header */}
       <div className="glass border-b border-slate-200 px-4 py-3">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -268,7 +258,6 @@ export default function TalkPage({ params }: Props) {
           </div>
 
           <div className="flex items-center gap-2">
-            {/* Connection status */}
             <div
               className={cn(
                 'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium',
@@ -300,11 +289,8 @@ export default function TalkPage({ params }: Props) {
         </div>
       </div>
 
-      {/* Main content */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Left side - Avatar and controls */}
         <div className="w-1/2 flex flex-col items-center justify-center p-8 border-r border-slate-200">
-          {/* AI Avatar */}
           <AIAvatar
             isActive={isConnected || isRecording}
             isSpeaking={isAISpeaking}
@@ -312,14 +298,12 @@ export default function TalkPage({ params }: Props) {
             className="mb-8"
           />
 
-          {/* Error */}
           {error && (
             <div className="mb-3 px-4 py-2 bg-red-100 rounded-lg text-red-600 text-center max-w-xs">
               {error}
             </div>
           )}
 
-          {/* Mic button */}
           <MicButton
             isRecording={isRecording}
             isConnecting={!isReady && isConnected}
@@ -328,7 +312,6 @@ export default function TalkPage({ params }: Props) {
             disabled={!isConnected}
           />
 
-          {/* Hints */}
           {!isConnected && (
             <p className="mt-4 text-sm text-amber-600 text-center">
               Đang kết nối với AI server...
@@ -340,7 +323,6 @@ export default function TalkPage({ params }: Props) {
             </p>
           )}
 
-          {/* End call button */}
           <button
             onClick={handleEndCall}
             className="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-full font-medium shadow-lg hover:shadow-xl transition-all"
@@ -350,7 +332,6 @@ export default function TalkPage({ params }: Props) {
           </button>
         </div>
 
-        {/* Right side - Chat */}
         <div className="w-1/2 flex flex-col bg-slate-50">
           <div className="px-6 py-5 border-b border-slate-200 bg-white">
             <h2 className="text-lg font-semibold text-slate-900">Hội thoại</h2>

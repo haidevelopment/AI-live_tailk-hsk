@@ -51,17 +51,14 @@ export function useAudioPlayback(options: UseAudioPlaybackOptions = {}) {
       const audioContext = initAudioContext();
       const currentTime = audioContext.currentTime;
 
-      // Initialize start time if needed
       if (nextStartTimeRef.current < currentTime) {
         nextStartTimeRef.current = currentTime + 0.05; // Small buffer
       }
 
-      // Process all chunks in queue
       while (audioQueueRef.current.length > 0) {
         const chunk = audioQueueRef.current.shift();
         if (!chunk) continue;
 
-        // Convert PCM16 to Float32
         const int16Data = new Int16Array(chunk);
         const float32Data = new Float32Array(int16Data.length);
         for (let i = 0; i < int16Data.length; i++) {
@@ -75,21 +72,17 @@ export function useAudioPlayback(options: UseAudioPlaybackOptions = {}) {
         source.buffer = audioBuffer;
         source.connect(audioContext.destination);
 
-        // Schedule playback at precise time
         source.start(nextStartTimeRef.current);
         scheduledSourcesRef.current.push(source);
 
-        // Update next start time
         nextStartTimeRef.current += audioBuffer.duration;
 
-        // Clean up when done
         source.onended = () => {
           const index = scheduledSourcesRef.current.indexOf(source);
           if (index > -1) {
             scheduledSourcesRef.current.splice(index, 1);
           }
           
-          // Check if all done
           if (scheduledSourcesRef.current.length === 0 && audioQueueRef.current.length === 0) {
             isProcessingRef.current = false;
             setIsPlaying(false);
@@ -121,12 +114,10 @@ export function useAudioPlayback(options: UseAudioPlaybackOptions = {}) {
   const clearQueue = useCallback(() => {
     audioQueueRef.current = [];
     
-    // Stop all scheduled sources
     scheduledSourcesRef.current.forEach(source => {
       try {
         source.stop();
       } catch (e) {
-        // Ignore errors when stopping
       }
     });
     scheduledSourcesRef.current = [];
@@ -135,7 +126,6 @@ export function useAudioPlayback(options: UseAudioPlaybackOptions = {}) {
       try {
         currentSourceRef.current.stop();
       } catch (e) {
-        // Ignore errors when stopping
       }
       currentSourceRef.current = null;
     }
@@ -150,7 +140,6 @@ export function useAudioPlayback(options: UseAudioPlaybackOptions = {}) {
     setIsPlaying(false);
   }, []);
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       clearQueue();

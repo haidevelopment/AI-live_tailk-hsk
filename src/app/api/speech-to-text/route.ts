@@ -22,7 +22,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Convert audio to base64
     const audioBuffer = await audioFile.arrayBuffer();
     const base64Audio = Buffer.from(audioBuffer).toString('base64');
 

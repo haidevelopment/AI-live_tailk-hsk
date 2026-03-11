@@ -30,8 +30,8 @@ export default function Header() {
               <MessageCircle className="h-5 w-5 text-white" />
             </div>
             <span className="text-xl font-bold">
-              <span className="text-primary-600">AI</span>
-              <span className="text-dark-blue"> Live Talk Của Bông</span>
+              <span className="text-primary-600">Mai</span>
+              <span className="text-dark-blue"> Quyên Chinese</span>
             </span>
           </Link>
 
